@@ -1,5 +1,6 @@
 package com.joomal.auth.handler;
 
+import com.joomal.auth.service.AuthService;
 import com.joomal.global.security.jwt.JwtProvider;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -23,6 +24,7 @@ public class OAuth2SuccessHandler
     private final JwtProvider jwtProvider;
     // 응답 객체의 실제 JSON 직렬화 형태를 확인하기 위한 ObjectMapper
     private final ObjectMapper objectMapper;
+    private final AuthService authService;
 
     @Override
     public void onAuthenticationSuccess(
@@ -33,9 +35,13 @@ public class OAuth2SuccessHandler
 
         log.debug("들어온 authentication객체 : {}",objectMapper.writeValueAsString(authentication));
         log.debug("들어온 authentication의 pricipal객체 : {}", objectMapper.writeValueAsString(authentication.getPrincipal()));
+        log.debug("로그인시도 요청이 있습니다.");
 
         OAuth2User user =
                 (OAuth2User) authentication.getPrincipal();
+
+        // authService 내부 로그인 메서드 호출
+        authService.login(user);
 
         String email =
                 user.getAttribute("email");
