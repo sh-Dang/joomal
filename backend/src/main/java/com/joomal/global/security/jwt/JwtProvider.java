@@ -16,8 +16,8 @@ public class JwtProvider {
     @Value("${jwt.expiration}")
     private int exp;
 
-
-    public String createToken(String email) {
+    // 서비스(Joomal) 내부에서 사용할 토큰 발급 로직
+    public String createAccessToken(String email) {
 
         Date now = new Date();
 

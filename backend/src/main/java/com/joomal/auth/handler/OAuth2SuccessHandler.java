@@ -4,26 +4,35 @@ import com.joomal.global.security.jwt.JwtProvider;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.jspecify.annotations.NonNull;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
+import tools.jackson.databind.ObjectMapper;
 
 import java.io.IOException;
 
 @Component
 @RequiredArgsConstructor
+@Slf4j
 public class OAuth2SuccessHandler
         extends SimpleUrlAuthenticationSuccessHandler {
 
     private final JwtProvider jwtProvider;
+    // 응답 객체의 실제 JSON 직렬화 형태를 확인하기 위한 ObjectMapper
+    private final ObjectMapper objectMapper;
 
     @Override
     public void onAuthenticationSuccess(
             HttpServletRequest request,
             HttpServletResponse response,
-            Authentication authentication)
+            @NonNull Authentication authentication)
             throws IOException {
+
+        log.debug("들어온 authentication객체 : {}",objectMapper.writeValueAsString(authentication));
+        log.debug("들어온 authentication의 pricipal객체 : {}", objectMapper.writeValueAsString(authentication.getPrincipal()));
 
         OAuth2User user =
                 (OAuth2User) authentication.getPrincipal();
@@ -32,7 +41,7 @@ public class OAuth2SuccessHandler
                 user.getAttribute("email");
 
         String token =
-                jwtProvider.createToken(email);
+                jwtProvider.createAccessToken(email);
 
         // 바로 메인으로 보내기
         response.sendRedirect("http://localhost:3000/?token=" + token);

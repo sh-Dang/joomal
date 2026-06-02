@@ -30,8 +30,7 @@ export default function Home() {
   
   return (
     <main className="flex min-h-screen flex-col items-center justify-center gap-4">
-      <h1 className="text-5xl font-bold">🍸 주말</h1>
-
+      <h1 className="text-5xl font-bold">🍸 주말(酒末)</h1>
       <p className="text-lg text-gray-600">
         한 주의 끝, 한 잔의 술
       </p>

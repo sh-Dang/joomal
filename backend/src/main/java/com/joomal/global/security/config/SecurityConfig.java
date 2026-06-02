@@ -44,6 +44,7 @@ public class SecurityConfig {
         return http.build();
     }
 
+    // 기존 세션을 끊고 로그인 시도할 때마다 계정을 확인하게끔 해주는 설정
     @Bean
     public OAuth2AuthorizationRequestResolver authorizationRequestResolver() {
 
