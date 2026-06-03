@@ -1,12 +1,17 @@
 package com.joomal.domain.member.entity;
 
+import com.joomal.domain.member.enumtype.Role;
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "member")
+@Getter
+@Setter
 public class Member {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -20,8 +25,9 @@ public class Member {
     @Column(name = "profile_image")
     private String profileImage;
 
-    @Column(name = "role")
-    private Enum role; // 유저와 admin 구분하기
+    @Enumerated(EnumType.STRING)
+    @Column(name = "role", nullable = false)
+    private Role role; // 유저와 admin 구분하기
 
     @CreationTimestamp
     @Column(name = "created_at")

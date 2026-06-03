@@ -1,19 +1,16 @@
 package com.joomal.auth.service;
 
+import com.joomal.auth.dto.request.SocialLoginRequestDto;
 import com.joomal.domain.member.entity.Member;
 import com.joomal.domain.member.entity.SocialAccount;
-import com.joomal.domain.member.repository.SocialAccountRepository;
+import com.joomal.domain.member.enumtype.SocialProvider;
 import com.joomal.domain.member.service.MemberService;
 import com.joomal.domain.member.service.SocialAccountService;
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 
-import java.security.Provider;
 import java.util.Optional;
-import java.util.OptionalInt;
 
 @Slf4j
 @Service
@@ -23,30 +20,41 @@ public class AuthService {
     private final MemberService memberService;
 
     // 로그인 요청시 일하게 될 메서드
-    public void login(OAuth2User user){
-        String providerId =
-                user.getAttribute("sub"); // sub 추출
+    public Optional<Member> login(SocialLoginRequestDto socialLoginRequestDto){
+        String socialProvider = socialLoginRequestDto.socialProvider(); // sns 제공 플랫폼
+        SocialProvider socialProviderEnum =
+                SocialProvider.valueOf(socialProvider.toUpperCase()); // sns 제공플랫폼을 Enum으로 환
+        String providerUserId = socialLoginRequestDto.providerUserId(); // sub 추출
+        String email = socialLoginRequestDto.email(); //email 추출
 
-        String email =
-                user.getAttribute("email"); // email 추출
+        /**
+         * 로그인 흐름 요약
+         * 1. SocialAccount가 존재하는지 검증
+         * 2-1. 존재하는 경우 : Member도 존재 할 것이므로 해당 SocialAccount와 1:1 매핑된 Member Entity 반환
+         * 2-2. 존재하지 않는 경우 : MemberEntity 생성(insert) 후 SocialAccount Entity도 생성(insert) 후 Member Entity반환
+         */
+        Optional<SocialAccount> socialAccount =
+                socialAccountService.findBySocialProviderAndProviderUserId(
+                        socialProviderEnum,
+                        providerUserId
+                );
 
-        String name =
-                user.getAttribute("name"); // name 추출 (필요없는 경우 코드 삭제하기)
-
-        Optional<Member> member = memberService.findByEmail(email);
-
-        // TODO : socialAccount를 사용 할 수 있도록 조회하기 (현재는 Null로 하드코딩)
-        // 프론트엔드에서 뭐를 보내주는지 조회해야 함
-        Provider provider = null;
-        Optional<SocialAccount> socialAccount = socialAccountService.findByProviderAndProviderId(provider, providerId);
-
-        if(member.isEmpty()){ // 가입된 회원이 아닌경우
-            log.debug("최초가입 회원입니다. 데이터 저장 후 로그인을 완료합니다.");
-
-            //TODO : Member테이블과 SocialAccount Table에 데이터 저장하여 서비스 회원임을 식별하게끔 하기
-        }else{ // 이미 존재하는 회원인 경우
-            log.debug("이미 존재하는 회원입니다. \n 로그인을 완료합니다.");
+        // SocialAccount가 존재 = 서비스의 회원임
+        if (socialAccount.isPresent()) {
+            return Optional.of(socialAccount.get().getMember());
         }
+
+        // 최초 가입 회원 처리
+        Member member = memberService.createMember();
+
+        socialAccountService.createSocialAccount(
+                member,
+                socialProvider,
+                providerUserId,
+                email
+        );
+
+        return Optional.of(member);
     }
 
 }

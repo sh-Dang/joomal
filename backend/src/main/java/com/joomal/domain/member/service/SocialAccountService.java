@@ -1,6 +1,8 @@
 package com.joomal.domain.member.service;
 
+import com.joomal.domain.member.entity.Member;
 import com.joomal.domain.member.entity.SocialAccount;
+import com.joomal.domain.member.enumtype.SocialProvider;
 import com.joomal.domain.member.repository.SocialAccountRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -13,10 +15,25 @@ import java.util.Optional;
 public class SocialAccountService {
     private final SocialAccountRepository socialAccountRepository;
 
-    public Optional<SocialAccount> findByProviderAndProviderId(
-            Provider provider,
+    public void createSocialAccount(
+            Member member,
+            String socialProvider,
+            String providerUserId,
+            String email){
+        SocialAccount socialAccount = new SocialAccount();
+        socialAccount.setMember(member);
+        // ENUM 사용을 위한 UpperCase 통일 메서드
+        socialAccount.setSocialProvider(
+                SocialProvider.from(socialProvider)
+        );
+        socialAccount.setProviderUserId(providerUserId);
+        socialAccount.setEmail(email);
+        socialAccountRepository.save(socialAccount);
+    }
+
+    public Optional<SocialAccount> findBySocialProviderAndProviderUserId(
+            SocialProvider provider,
             String providerId){
-        Optional<SocialAccount> socialAccount = socialAccountRepository.findByProviderAndProviderId(provider, providerId);
-        return socialAccount;
+        return socialAccountRepository.findBySocialProviderAndProviderUserId(provider, providerId);
     }
 }
