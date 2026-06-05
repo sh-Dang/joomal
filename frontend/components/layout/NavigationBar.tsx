@@ -6,13 +6,6 @@ export default function NavigationBar() {
       <div className="mx-auto flex max-w-7xl gap-6 px-6 py-3">
 
         <Link
-          href="/"
-          className="text-sm font-medium text-[var(--foreground)] hover:text-[var(--primary)] transition"
-        >
-          홈
-        </Link>
-
-        <Link
           href="/cocktails"
           className="text-sm font-medium text-[var(--foreground)] hover:text-[var(--primary)] transition"
         >

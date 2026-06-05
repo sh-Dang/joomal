@@ -17,14 +17,14 @@ export default function Header({ isLoggedIn, onLogout }: HeaderProps) {
           href="/"
           className="text-2xl font-bold text-[var(--primary)]"
         >
-          🍸 주말
+          🍸 주말(酒末)
         </Link>
 
         {/* 검색창 */}
         <div className="w-full max-w-md">
           <input
             type="text"
-            placeholder="칵테일 검색..."
+            placeholder="칵테일, 재료를 검색해 보세요"
             className="w-full rounded-lg border border-[var(--border)] bg-white px-4 py-2 outline-none focus:border-[var(--primary)] transition"
           />
         </div>
