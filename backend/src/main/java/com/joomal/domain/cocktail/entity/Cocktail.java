@@ -27,10 +27,10 @@ public class Cocktail {
     private String imageUrl;
 
     @Column(name = "abv", precision = 4, scale = 1)
-    private BigDecimal abv;
+    private BigDecimal abv; // 도수
 
     @Column(name = "glass_type", length = 50)
-    private String glassType;
+    private String glassType; // 사용하는 잔
 
     @Column(name = "created_at", updatable = false)
     private LocalDateTime createdAt;
