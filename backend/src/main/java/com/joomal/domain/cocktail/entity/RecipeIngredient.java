@@ -3,10 +3,17 @@ package com.joomal.domain.cocktail.entity;
 import com.joomal.domain.cocktail.enumtype.Unit;
 import com.joomal.domain.ingredient.entity.Ingredient;
 import jakarta.persistence.*;
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.math.BigDecimal;
 
 @Entity
+@Getter
+@Setter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class RecipeIngredient {
 
     @Id

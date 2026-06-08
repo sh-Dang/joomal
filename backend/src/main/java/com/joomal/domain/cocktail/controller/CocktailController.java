@@ -1,5 +1,6 @@
 package com.joomal.domain.cocktail.controller;
 
+import com.joomal.domain.cocktail.dto.CocktailDetailResponseDto;
 import com.joomal.domain.cocktail.dto.CocktailResponseDto;
 import com.joomal.domain.cocktail.entity.Cocktail;
 import com.joomal.domain.cocktail.service.CocktailService;
@@ -26,7 +27,7 @@ public class CocktailController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Optional<Cocktail>> getCocktail(@PathVariable Long id) {
+    public ResponseEntity<CocktailDetailResponseDto> getCocktail(@PathVariable Long id) {
         return ResponseEntity.ok(cocktailService.getCocktail(id));
     }
 }

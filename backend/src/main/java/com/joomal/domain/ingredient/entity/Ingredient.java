@@ -2,8 +2,10 @@ package com.joomal.domain.ingredient.entity;
 
 import com.joomal.domain.ingredient.enumtype.Category;
 import jakarta.persistence.*;
+import lombok.Getter;
 
 @Entity
+@Getter
 public class Ingredient {
 
     @Id
