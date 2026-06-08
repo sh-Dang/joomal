@@ -1,6 +1,7 @@
 package com.joomal.domain.cocktail.entity;
 
 import jakarta.persistence.*;
+import lombok.Getter;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -8,6 +9,7 @@ import java.time.LocalDateTime;
 // 칵테일 엔터티 매핑
 @Entity
 @Table(name = "cocktail")
+@Getter
 public class Cocktail {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

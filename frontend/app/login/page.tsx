@@ -1,6 +1,6 @@
 "use client";
 
-export default function Home() {
+export default function LoginPage() {
   const handleGoogleLogin = () => {
     // Spring Security가 자동으로 제공하는 OAuth2 로그인 시작 URL
     window.location.href =
