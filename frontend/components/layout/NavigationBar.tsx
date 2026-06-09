@@ -13,12 +13,11 @@ export default function NavigationBar() {
         </Link>
 
         <Link
-          href="/recipes"
+          href="/liquors"
           className="text-sm font-medium text-[var(--foreground)] hover:text-[var(--primary)] transition"
         >
-          레시피
+          주류
         </Link>
-
         <Link
           href="/ingredients"
           className="text-sm font-medium text-[var(--foreground)] hover:text-[var(--primary)] transition"

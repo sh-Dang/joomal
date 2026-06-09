@@ -31,9 +31,6 @@ export default function Home() {
 
   return (
     <>
-      <Header isLoggedIn={isLoggedIn} onLogout={handleLogout} />
-      <NavBar />
-
       <main className="mx-auto max-w-7xl p-6 bg-[var(--background)] text-[var(--foreground)]">
 
         {/* Hero */}
@@ -43,7 +40,7 @@ export default function Home() {
           </h1>
 
           <p className="text-lg text-[var(--foreground)]/70">
-            한 주의 끝, 한 잔의 술
+            {/* 한 주의 끝, 한 잔의 술 */}
           </p>
         </section>
 

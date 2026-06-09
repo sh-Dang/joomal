@@ -1,13 +1,38 @@
 "use client";
 
 import Link from "next/link";
+import { useState, useEffect } from "react";
+import { SearchParamsContext } from "next/dist/shared/lib/hooks-client-context.shared-runtime";
+import { useSearchParams } from "next/navigation";
 
 interface HeaderProps {
   isLoggedIn: boolean;
   onLogout: () => void;
 }
 
-export default function Header({ isLoggedIn, onLogout }: HeaderProps) {
+export default function Header() {
+  const searchParams = useSearchParams();
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  useEffect(() => {
+    const token = searchParams.get("token");
+
+    if (token) {
+      localStorage.setItem("accessToken", token);
+      window.history.replaceState({}, "", "/");
+      setIsLoggedIn(true);
+      return;
+    }
+
+    const storedToken = localStorage.getItem("accessToken");
+    setIsLoggedIn(!!storedToken);
+  }, [searchParams]);
+
+  const handleLogout = () => {
+    localStorage.removeItem("accessToken");
+    setIsLoggedIn(false);
+  };
+
   return (
     <header className="border-b border-[var(--border)] bg-[var(--background)]">
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-6">
@@ -59,7 +84,7 @@ export default function Header({ isLoggedIn, onLogout }: HeaderProps) {
               </Link>
 
               <button
-                onClick={onLogout}
+                onClick={handleLogout}
                 className="rounded-lg border border-[var(--border)] px-4 py-2 text-[var(--foreground)] hover:border-[var(--primary)] hover:text-[var(--primary)] transition"
               >
                 로그아웃
