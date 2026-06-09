@@ -28,17 +28,27 @@ export default function Header() {
     if (accessToken) {
       // localStorage에 accessToken이라는 이름으로 token 저장
       localStorage.setItem("accessToken", accessToken);
+
+      // 주소창에서 token을 제거하여 URL에 노출되지 않도록 변경
       window.history.replaceState({}, "", "/");
+
+      // accessToken을 저장한 후 로그인 true 상태로 변경
       setIsLoggedIn(true);
+      // 이후 로직은 실행하지 않고 종료
       return;
     }
 
+    //token이 전달되지 않은 경우
+    // 기존에 저장된 Access Token 존재 여부 확인
     const storedToken = localStorage.getItem("accessToken");
+    // accessToken 존재여부에 따른 로그인 상태 수정메서드
     setIsLoggedIn(!!storedToken);
   }, [searchParams]);
 
   const handleLogout = () => {
+    // localStorage에 저장된 accessToken제거
     localStorage.removeItem("accessToken");
+    // 로그인 상태를 false로 설정
     setIsLoggedIn(false);
   };
 
