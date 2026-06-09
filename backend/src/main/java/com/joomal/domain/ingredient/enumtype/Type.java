@@ -1,15 +1,12 @@
 package com.joomal.domain.ingredient.enumtype;
 
-public enum Category {
-    RUM("럼"),
-    HERB("허브"),
-    FRUIT("과일"),
-    SWEETENER("감미료"),
+public enum Type {
+    LIQUOR("주류"),
     MIXER("재료");
 
     private final String description;
 
-    Category(String description) {
+    Type(String description) {
         this.description = description;
     }
 }
