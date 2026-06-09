@@ -41,26 +41,38 @@ export default function Cocktails(){
                         key={cocktail.id}
                         onClick={() => getDetail(cocktail.id)}
                         className="
+                            flex
+                            items-center
+                            justify-between
                             cursor-pointer
                             rounded-xl
                             border
                             border-gray-200
                             bg-white
-                            p-5
+                            p-6
                             shadow-sm
                             transition
-                            duration-200
                             hover:-translate-y-1
                             hover:shadow-lg
                         "
                     >
-                        <h2 className="text-xl font-semibold text-gray-800">
-                            {cocktail.korName}
-                        </h2>
+                        {/* 왼쪽 */}
+                        <div>
+                            <h2 className="text-2xl font-bold text-gray-800">
+                                {cocktail.korName}
+                            </h2>
 
-                        <p className="mt-1 text-gray-500 italic">
-                            {cocktail.engName}
-                        </p>
+                            <p className="mt-2 text-lg italic text-gray-500">
+                                {cocktail.engName}
+                            </p>
+                        </div>
+
+                        {/* 오른쪽 */}
+                        <img
+                            src={cocktail.imageUrl}
+                            alt={cocktail.korName}
+                            className="h-32 w-32 rounded-xl object-cover"
+                        />
                     </div>
                 ))}
             </div>
