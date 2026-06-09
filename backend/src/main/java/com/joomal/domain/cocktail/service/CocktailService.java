@@ -15,9 +15,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import tools.jackson.databind.ObjectMapper;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -62,6 +60,9 @@ public class CocktailService {
 
         List<RecipeStep> stepResult =
                 recipeStepRepository.findByCocktailId(id);
+
+        log.debug("stepResult = {}", objectMapper.writeValueAsString(stepResult));
+        log.debug("ingredientResult = {}", objectMapper.writeValueAsString(ingredientResult));
 
         return new CocktailDetailResponseDto(
                 cocktail.getId(),

@@ -1,6 +1,5 @@
 package com.joomal.domain.cocktail.repository;
 
-import com.joomal.domain.cocktail.entity.RecipeIngredient;
 import com.joomal.domain.cocktail.entity.RecipeStep;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
