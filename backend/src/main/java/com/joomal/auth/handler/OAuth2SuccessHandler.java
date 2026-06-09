@@ -66,6 +66,6 @@ public class OAuth2SuccessHandler
         String accessToken = jwtProvider.createAccessToken(String.valueOf(member.getId()));
 
         // 바로 메인으로 보내기
-        response.sendRedirect("http://localhost:3000/?token=" + accessToken);
+        response.sendRedirect("http://localhost:3000/?accessToken=" + accessToken);
     }
 }

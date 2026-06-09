@@ -2,23 +2,32 @@
 
 import Link from "next/link";
 import { useState, useEffect } from "react";
-import { SearchParamsContext } from "next/dist/shared/lib/hooks-client-context.shared-runtime";
 import { useSearchParams } from "next/navigation";
 
+// Header 컴포넌트에서 사용할 로그인 관련 속성 정의
 interface HeaderProps {
+  // 현재 로그인 여부 flag
   isLoggedIn: boolean;
+  // 로그아웃 버튼 클릭 시 실행 될 함수
   onLogout: () => void;
 }
 
 export default function Header() {
+  // 현재 URL의 Query Parameter를 조회하기 위한 객체 // 예) /?token=abcd1234 -> searchParams.get("token")
   const searchParams = useSearchParams();
+  // 초기 로그인상태를 false로 관리
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   useEffect(() => {
-    const token = searchParams.get("token");
+    // URL에 포함된 accessToken값 조회
+    // 초기에는 백엔드가 redirect 하며 http://localhost:3000/?accessToken=eyJhbGc...의 형식으로 보내주는데
+    // 해당하는 accessToken에 대한 값을 받아서 accessToken 변수에 저장하는 역할을 해줌
+    const accessToken = searchParams.get("accessToken");
 
-    if (token) {
-      localStorage.setItem("accessToken", token);
+    // token이 전달된 경우
+    if (accessToken) {
+      // localStorage에 accessToken이라는 이름으로 token 저장
+      localStorage.setItem("accessToken", accessToken);
       window.history.replaceState({}, "", "/");
       setIsLoggedIn(true);
       return;
