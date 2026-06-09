@@ -29,18 +29,41 @@ export default function Cocktails(){
             .then((data) => setCocktails(data));
     }, []);
 
-    return(
-        <>
-            <h1>칵테일 목록을 보여주는 페이지 입니다.</h1>
-            {cocktails.map((cocktail) => (
-                <div key={cocktail.id}>
-                    <ol onClick={() => getDetail(cocktail.id)}>
-                        <li>{cocktail.korName}</li>
-                        <li>{cocktail.engName}</li>
-                    </ol>
-                </div>
-            ))}
-        </>
-    )
+    return (
+        <div className="mx-auto max-w-4xl p-8">
+            <h1 className="mb-8 text-center text-4xl font-bold">
+                🍸 Cocktail List
+            </h1>
 
+            <div className="space-y-4">
+                {cocktails.map((cocktail) => (
+                    <div
+                        key={cocktail.id}
+                        onClick={() => getDetail(cocktail.id)}
+                        className="
+                            cursor-pointer
+                            rounded-xl
+                            border
+                            border-gray-200
+                            bg-white
+                            p-5
+                            shadow-sm
+                            transition
+                            duration-200
+                            hover:-translate-y-1
+                            hover:shadow-lg
+                        "
+                    >
+                        <h2 className="text-xl font-semibold text-gray-800">
+                            {cocktail.korName}
+                        </h2>
+
+                        <p className="mt-1 text-gray-500 italic">
+                            {cocktail.engName}
+                        </p>
+                    </div>
+                ))}
+            </div>
+        </div>
+    );
 }

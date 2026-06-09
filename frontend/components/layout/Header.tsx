@@ -21,12 +21,29 @@ export default function Header({ isLoggedIn, onLogout }: HeaderProps) {
         </Link>
 
         {/* 검색창 */}
-        <div className="w-full max-w-md">
+        <div className="flex w-full max-w-2xl items-center gap-2">
           <input
             type="text"
             placeholder="칵테일, 재료를 검색해 보세요"
-            className="w-full rounded-lg border border-[var(--border)] bg-white px-4 py-2 outline-none focus:border-[var(--primary)] transition"
+            className="flex-1 rounded-lg border border-[var(--border)] bg-white px-4 py-2 outline-none transition focus:border-[var(--primary)]"
           />
+
+          <button
+            className="
+              rounded-lg
+              bg-[var(--primary)]
+              px-5
+              py-2
+              font-semibold
+              text-white
+              transition
+              hover:opacity-90
+              active:scale-95
+              whitespace-nowrap
+            "
+          >
+            검색
+          </button>
         </div>
 
         {/* 우측 메뉴 */}
