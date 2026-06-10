@@ -14,15 +14,15 @@ import lombok.Getter;
  */
 public enum Unit {
 
-    ML("밀리리터"),
-    OZ("온스"),
-    DASH("대시"),
-    DROP("방울"),
-    LEAF("장"),
-    PIECE("조각"),
-    TSP("티스푼"),
-    TBSP("테이블스푼"),
-    EA("개");
+    ML("밀리리터", "ml"),
+    OZ("온스", "oz"),
+    DASH("대시", "dash"),
+    DROP("방울", "drop"),
+    LEAF("장", "leaf"),
+    PIECE("조각", "piece"),
+    TSP("티스푼", "tsp"),
+    TBSP("테이블스푼", "tbsp"),
+    EA("개", "ea");
 
     /**
      * 사용자에게 보여줄 한글 이름
@@ -33,10 +33,20 @@ public enum Unit {
      *  -> "온스"
      *  백엔드에서 getDescription()을 사용하여 단위를 한글로 변환 후 프론트엔드에 반환해준다.
      */
-    private final String description;
+    private final String korDescription;
 
-    Unit(String description) {
-        this.description = description;
+    /**
+     * 사용자에게 보여줄 영문 이름
+     * 예)
+     * Unit.OZ.getEngDescription()
+     * -> "oz"
+     * 백엔드에서 getEngDescription()을 사용하여 단위를 영문으로 변환 후 프론트엔드에 반환해준다.
+     */
+    private final String engDescription;
+
+    Unit(String korDescription,String engDescription) {
+        this.korDescription = korDescription;
+        this.engDescription = engDescription;
     }
 
 }

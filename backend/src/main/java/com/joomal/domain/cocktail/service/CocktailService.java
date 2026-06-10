@@ -2,6 +2,7 @@ package com.joomal.domain.cocktail.service;
 
 import com.joomal.domain.cocktail.dto.CocktailDetailResponseDto;
 import com.joomal.domain.cocktail.dto.CocktailResponseDto;
+import com.joomal.domain.cocktail.dto.RecipeIngredientDto;
 import com.joomal.domain.cocktail.entity.Cocktail;
 import com.joomal.domain.cocktail.entity.RecipeIngredient;
 import com.joomal.domain.cocktail.entity.RecipeStep;
@@ -55,8 +56,22 @@ public class CocktailService {
         Cocktail cocktail = cocktailRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("칵테일이 존재하지 않습니다."));
 
-        List<RecipeIngredient> ingredientResult =
+        List<RecipeIngredient> ingredients =
                 recipeIngredientRepository.findByCocktailId(id);
+
+        // Ingredient에서 enumDescription을 가져오기 위한 Dto매핑
+        List<RecipeIngredientDto> ingredientResult =
+                ingredients.stream()
+                        .map(ri -> new RecipeIngredientDto(
+                                ri.getIngredient().getId(),
+                                ri.getIngredient().getKorName(),
+                                ri.getIngredient().getEngName(),
+                                ri.getAmount(),
+                                ri.getUnit().getKorDescription(), // "온스", "밀리리터"등 한글명
+                                ri.getUnit().getEngDescription() // "oz", "ml"등 영문명
+                        ))
+                        .toList();
+
 
         List<RecipeStep> stepResult =
                 recipeStepRepository.findByCocktailId(id);

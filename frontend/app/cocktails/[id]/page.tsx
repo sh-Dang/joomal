@@ -2,29 +2,14 @@
 
 import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
-import { log } from "console";
-import { isMainThread } from "worker_threads";
 
-// interface RecipeIngredient {
-//     ingredientId: number;
-//     name: string;
-//     amount: number;
-//     unit: string;
-// }
-// interface RecipeStep {
-//     stepNo: number;
-//     instruction: string;
-// }
 interface RecipeIngredient {
     id: number;
-    name: string;
+    ingredientKorName: string;
+    ingredientEngName: string;
     amount: number;
-    unit: string;
-    ingredient: Ingredient[];
-}
-
-interface Ingredient{
-    name: string;
+    korUnit: string;
+    engUnit: string;
 }
 
 interface RecipeStep {
@@ -100,10 +85,10 @@ export default function CocktailDetails(){
                                     key={ing.id}
                                     className="flex justify-between rounded-lg border border-gray-200 p-3"
                                 >
-                                    <span>{ing.ingredient.name}</span>
+                                    <span>{ing.ingredientKorName}</span>
 
                                     <span className="font-semibold text-gray-600">
-                                        {ing.amount} {ing.unit}
+                                        {ing.amount} {ing.korUnit}({ing.engUnit})
                                     </span>
                                 </li>
                             ))}
