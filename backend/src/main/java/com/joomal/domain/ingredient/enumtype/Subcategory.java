@@ -1,14 +1,19 @@
 package com.joomal.domain.ingredient.enumtype;
 
-public enum Subcategory {
-    WHITE_RUM("화이트 럼"),
-    MINT("민트"),
-    LIME("라임"),
-    SYRUP("시럽"),
-    SODA("소다");
+import lombok.Getter;
 
-    private final String description;
-    Subcategory(String description){
-        this.description = description;
+@Getter
+public enum Subcategory {
+    WHITE_RUM("화이트 럼", "White Rum"),
+    MINT("민트", "Mint"),
+    LIME("라임", "Lime"),
+    SYRUP("시럽", "Syrup"),
+    SODA("소다", "Soda");
+
+    private final String korDescription;
+    private final String engDescription;
+    Subcategory(String korDescription, String engDescription){
+        this.korDescription = korDescription;
+        this.engDescription = engDescription;
     }
 }

@@ -1,15 +1,20 @@
 package com.joomal.domain.ingredient.enumtype;
 
+import lombok.Getter;
+
+@Getter
 public enum Category {
-    RUM("럼"),
-    HERB("허브"),
-    FRUIT("과일"),
-    SWEETENER("감미료"),
-    MIXER("재료");
+    RUM("럼", "Rum"),
+    HERB("허브", "Herb"),
+    FRUIT("과일", "Fruit"),
+    SWEETENER("감미료", "Sweetener"),
+    MIXER("재료", "Mixer");
 
-    private final String description;
+    private final String korDescription;
+    private final String engDescription;
 
-    Category(String description) {
-        this.description = description;
+    Category(String korDescription, String engDescription) {
+        this.korDescription = korDescription;
+        this.engDescription = engDescription;
     }
 }
