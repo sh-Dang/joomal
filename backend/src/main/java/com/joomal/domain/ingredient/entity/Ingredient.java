@@ -36,7 +36,7 @@ public class Ingredient {
     private String engName;
 
     @Column(name="image_url")
-    private String imgaeUrl;
+    private String imageUrl;
 
     @Column(name = "created_at", updatable = false)
     private LocalDateTime createdAt;
