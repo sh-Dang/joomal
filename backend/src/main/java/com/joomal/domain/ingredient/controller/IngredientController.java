@@ -25,6 +25,7 @@ public class IngredientController {
         return ingredientService.getIngredients(type);
     }
 
+    // id를 담아서 service에 요청하는 controller 메서드
     @GetMapping("/{id}")
     public ResponseEntity<IngredientDetailResponseDto> getIngredient(@PathVariable Long id) {
         return ResponseEntity.ok(ingredientService.getIngredient(id));

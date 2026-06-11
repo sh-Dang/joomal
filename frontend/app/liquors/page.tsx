@@ -19,8 +19,9 @@ export default function Liquors(){
     const [liquors, setLiquors] = useState<Liquor[]>([]);
     const router = useRouter();
 
+    // RESTful한 설계를 위해 liquors 도메인은 생성하지 않음
     const getDetail = (id: number) => {
-        router.push(`/ingrdients/${id}`)
+        router.push(`/ingredients/${id}`)
     }
 
     useEffect(()=> {

@@ -30,9 +30,17 @@ public class IngredientService {
                 .toList();
     }
 
+    // 재료(주류) 상세페이지 요청을 컨트롤하는 메서드
     public IngredientDetailResponseDto getIngredient(Long id) {
         Ingredient ingredient = ingredientRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("존재하지 않는 재료입니다."));
-        return null;
+
+        return new IngredientDetailResponseDto(
+                ingredient.getId(),
+                ingredient.getKorName(),
+                ingredient.getEngName(),
+                ingredient.getImageUrl(),
+                ingredient.getAbv(),
+                ingredient.getDescription());
     }
 }
