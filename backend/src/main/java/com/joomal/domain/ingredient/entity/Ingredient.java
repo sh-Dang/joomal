@@ -6,6 +6,7 @@ import com.joomal.domain.ingredient.enumtype.Type;
 import jakarta.persistence.*;
 import lombok.Getter;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Entity
@@ -20,6 +21,9 @@ public class Ingredient {
     @Enumerated(EnumType.STRING)
     @Column(name="type")
     private Type type;
+
+    @Column(name = "abv", precision = 4, scale = 1)
+    private BigDecimal abv; // 도수
 
     @Enumerated(EnumType.STRING)
     @Column(name="category")
@@ -37,6 +41,9 @@ public class Ingredient {
 
     @Column(name="image_url")
     private String imageUrl;
+
+    @Column(name="description")
+    private String description;
 
     @Column(name = "created_at", updatable = false)
     private LocalDateTime createdAt;

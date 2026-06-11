@@ -54,7 +54,7 @@ public class CocktailService {
     public CocktailDetailResponseDto getCocktail(Long id){
 
         Cocktail cocktail = cocktailRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("칵테일이 존재하지 않습니다."));
+                .orElseThrow(() -> new RuntimeException("존재하지 않는 칵테일입니다."));
 
         List<RecipeIngredient> ingredients =
                 recipeIngredientRepository.findByCocktailId(id);

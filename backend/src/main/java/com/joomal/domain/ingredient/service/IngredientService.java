@@ -1,5 +1,6 @@
 package com.joomal.domain.ingredient.service;
 
+import com.joomal.domain.ingredient.dto.IngredientDetailResponseDto;
 import com.joomal.domain.ingredient.dto.IngredientResponseDto;
 import com.joomal.domain.ingredient.entity.Ingredient;
 import com.joomal.domain.ingredient.enumtype.Type;
@@ -27,5 +28,11 @@ public class IngredientService {
         return ingredients.stream()
                 .map(IngredientResponseDto::from)
                 .toList();
+    }
+
+    public IngredientDetailResponseDto getIngredient(Long id) {
+        Ingredient ingredient = ingredientRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("존재하지 않는 재료입니다."));
+        return null;
     }
 }
