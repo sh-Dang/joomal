@@ -34,49 +34,62 @@ export default function Ingredients(){
     }, []);
     
     return(
-            <div className="mx-auto max-w-4xl p-8">
-            <h1 className="mb-8 text-center text-4xl font-bold">
-                Ingredient List
+        <div className="mx-auto max-w-7xl px-10 py-10">
+            <h1 className="mb-10 text-center text-4xl font-bold">
+                Liquor List
             </h1>
-
-            <div className="space-y-4">
-        {ingredients.map((ingredient) => (
-            <div
-                key={ingredient.id}
-                onClick={() => getDetail(ingredient.id)}
-                    className="
-                        flex
-                        items-center
-                        justify-between
-                        cursor-pointer
-                        rounded-xl
-                        border
-                        border-gray-200
-                        bg-white
-                        p-6
-                        shadow-sm
-                        transition
-                        hover:-translate-y-1
-                        hover:shadow-lg
-                    "
-            >
-                        {/* 왼쪽 */}
-                        <div>
-                            <h2 className="text-2xl font-bold text-gray-800">
-                                {ingredient.korName}
-                            </h2>
-
-                            <p className="mt-2 text-lg italic text-gray-500">
-                                {ingredient.engName}
-                            </p>
-                        </div>
-
-                        {/* 오른쪽 */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                {ingredients.map((ingredient) => (
+                    <div
+                        key={ingredient.id}
+                        onClick={() => getDetail(ingredient.id)}
+                        className="
+                            relative
+                            h-56
+                            cursor-pointer
+                            overflow-hidden
+                            rounded-xl
+                            shadow-md
+                            transition
+                            hover:scale-105
+                        "
+                    >
+                        {/* 배경 이미지 */}
                         <img
                             src={ingredient.imageUrl}
                             alt={ingredient.korName}
-                            className="h-32 w-32 rounded-xl object-cover"
+                            className="
+                                absolute
+                                inset-0
+                                h-full
+                                w-full
+                                object-cover
+                            "
                         />
+
+                        {/* 어두운 오버레이 */}
+                        <div className="absolute inset-0 bg-black/5"></div>
+
+                        {/* 텍스트 */}
+                        <div
+                            className="
+                                relative
+                                z-10
+                                flex
+                                h-full
+                                flex-col
+                                p-4
+                                text-white
+                            "
+                        >
+                            <h2 className="text-xl font-bold text-black">
+                                {ingredient.korName}
+                            </h2>
+
+                            <p className="italic text-sm text-gray-500">
+                                {ingredient.engName}
+                            </p>
+                        </div>
                     </div>
                 ))}
             </div>

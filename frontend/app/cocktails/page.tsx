@@ -36,57 +36,57 @@ export default function Cocktails(){
             </h1>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
                 {cocktails.map((cocktail) => (
-                <div
-                    key={cocktail.id}
-                    onClick={() => getDetail(cocktail.id)}
-                    className="
-                        relative
-                        h-56
-                        cursor-pointer
-                        overflow-hidden
-                        rounded-xl
-                        shadow-md
-                        transition
-                        hover:scale-105
-                    "
-                >
-                    {/* 배경 이미지 */}
-                    <img
-                        src={cocktail.imageUrl}
-                        alt={cocktail.korName}
-                        className="
-                            absolute
-                            inset-0
-                            h-full
-                            w-full
-                            object-cover
-                        "
-                    />
-
-                    {/* 어두운 오버레이 */}
-                    <div className="absolute inset-0 bg-black/5"></div>
-
-                    {/* 텍스트 */}
                     <div
+                        key={cocktail.id}
+                        onClick={() => getDetail(cocktail.id)}
                         className="
                             relative
-                            z-10
-                            flex
-                            h-full
-                            flex-col
-                            p-4
-                            text-white
+                            h-56
+                            cursor-pointer
+                            overflow-hidden
+                            rounded-xl
+                            shadow-md
+                            transition
+                            hover:scale-105
                         "
                     >
-                        <h2 className="text-xl font-bold text-black">
-                            {cocktail.korName}
-                        </h2>
+                        {/* 배경 이미지 */}
+                        <img
+                            src={cocktail.imageUrl}
+                            alt={cocktail.korName}
+                            className="
+                                absolute
+                                inset-0
+                                h-full
+                                w-full
+                                object-cover
+                            "
+                        />
 
-                        <p className="italic text-sm text-gray-500">
-                            {cocktail.engName}
-                        </p>
+                        {/* 어두운 오버레이 */}
+                        <div className="absolute inset-0 bg-black/5"></div>
+
+                        {/* 텍스트 */}
+                        <div
+                            className="
+                                relative
+                                z-10
+                                flex
+                                h-full
+                                flex-col
+                                p-4
+                                text-white
+                            "
+                        >
+                            <h2 className="text-xl font-bold text-black">
+                                {cocktail.korName}
+                            </h2>
+
+                            <p className="italic text-sm text-gray-500">
+                                {cocktail.engName}
+                            </p>
+                        </div>
                     </div>
-                </div>
                 ))}
             </div>
         </div>
