@@ -1,10 +1,11 @@
 package com.joomal.domain.member.service;
 
-import com.joomal.auth.dto.request.SocialLoginRequestDto;
+import com.joomal.domain.member.dto.MemberResponseDto;
 import com.joomal.domain.member.entity.Member;
 import com.joomal.domain.member.enumtype.Role;
 import com.joomal.domain.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -23,10 +24,23 @@ public class MemberService {
                     ThreadLocalRandom.current().nextInt(100000, 999999);
         } while (memberRepository.existsByNickname(nickname));
         member.setNickname(nickname);
-        member.setRole(Role.USER);
+        member.setRole(Role.USER); // default USER로 설정하여 DB 저장
         // TODO : 추후 이미지 추가, 변경 기능 구현
-//        member.setProfileImage("");
+        member.setProfileImage("http://localhost:9999/images/default_image.png");
         return memberRepository.save(member);
+    }
+
+    // 유저 정보를 반환하는 메서드
+    public ResponseEntity<MemberResponseDto> getMember(Long id) {
+        Member member = memberRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("존재하지 않는 회원입니다."));
+
+        MemberResponseDto memberResponseDto = new MemberResponseDto(
+                member.getNickname(),
+                member.getProfileImage()
+        );
+
+        return ResponseEntity.ok(memberResponseDto);
     }
 
     public Optional<Member> findById(Long id) {
