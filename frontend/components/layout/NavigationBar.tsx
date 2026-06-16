@@ -48,9 +48,9 @@ export default function NavigationBar() {
         </Link>
 
         <Link
-          href="/community"
+          href="/communities"
           className={`text-sm font-medium transition ${
-            isActive("/community")
+            isActive("/communities")
               ? "text-amber-500 border-b-2 border-amber-500"
               : "text-[var(--foreground)] hover:text-[var(--primary)]"
           }`}
