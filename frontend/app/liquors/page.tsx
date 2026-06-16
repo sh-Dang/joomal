@@ -21,7 +21,7 @@ export default function Liquors(){
 
     // RESTful한 설계를 위해 liquors 도메인은 생성하지 않음
     const getDetail = (id: number) => {
-        router.push(`/ingredients/${id}`)
+        router.push(`/liquors/${id}`)
     }
 
     useEffect(()=> {
