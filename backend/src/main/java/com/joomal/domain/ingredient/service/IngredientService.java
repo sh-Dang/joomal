@@ -16,6 +16,7 @@ public class IngredientService {
     // 레포 주입
     private final IngredientRepository ingredientRepository;
 
+    
     public List<IngredientResponseDto> getIngredients(Type type) {
         // repo에서 반환받아서 dto에 매핑해 줄 객체를 담을 변수
         List<Ingredient> ingredients;

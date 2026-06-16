@@ -20,8 +20,9 @@ public class IngredientController {
 
     @GetMapping
     public List<IngredientResponseDto> getIngredients(
-            @RequestParam(required = false) Type type) { // /api/ingredients?type=aaaa 요청을 매핑해주는 어노테이션
-
+            // /api/ingredients?type=aaaa 요청을 매핑해주는 어노테이션
+            // value에 key값을 지정해줌으로써 프론트엔드와 통신의 일관성을 확보할 수 있음
+            @RequestParam(value = "type", required = false) Type type) {
         return ingredientService.getIngredients(type);
     }
 

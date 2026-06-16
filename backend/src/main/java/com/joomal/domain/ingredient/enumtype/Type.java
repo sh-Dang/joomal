@@ -5,7 +5,7 @@ import lombok.Getter;
 @Getter
 public enum Type {
     LIQUOR("주류", "Liquor"),
-    MIXER("재료", "Mixer");
+    INGREDIENT("재료", "Ingredient");
 
     private final String korDescription;
     private final String engDescription;

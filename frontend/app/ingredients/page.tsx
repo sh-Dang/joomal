@@ -25,7 +25,7 @@ export default function Ingredients(){
     }
 
         useEffect(() => {
-        fetch("http://localhost:9999/api/ingredients?type=MIXER")
+        fetch("http://localhost:9999/api/ingredients?type=INGREDIENT")
             .then((res) => res.json())
             .then((data) => {
                 console.log(data);
