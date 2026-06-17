@@ -3,15 +3,17 @@
 import { useState, useEffect } from "react";
 
 interface Member{
-    korName: string;
-    engName: string;
+    nickname: string;
+    profileImage: string;
 }
 
 export default function MyPage(){
 
-    const [member, setMember] = useState();
-
+    const [member, setMember] = useState<Member | null>(null);
+    
+    // 최초 실행하여 유저정보를 불러오는 메서드
     useEffect(() => {
+        // localStorage의 accessToken을 추출
         const token = localStorage.getItem("accessToken");
         if (!token) return;
 
@@ -21,107 +23,111 @@ export default function MyPage(){
                 Authorization: `Bearer ${token}`,
             },
         })
-        .then((res) => res.json())
-        .then((data) => setMember(data));
+        .then((res) => {
+            console.log(res);
+            return res.json();
+        })
+        .then((data) => {
+            setMember(data);
+            console.log(data);
+        });
     }, []);
     
+
     return(
-        <div
-            className="flex gap-8 rounded-2xl border p-8"
-            style={{
-                borderColor: "var(--border)",
-                backgroundColor: "white",
-            }}
-        >
-            <div className="flex flex-1 flex-col gap-4">
+        <div className="flex justify-center">
+            {member && (
+            <div
+                className="w-full max-w-3xl rounded-2xl border p-8"
+                style={{
+                    borderColor: "var(--border)",
+                    backgroundColor: "white",
+                }}
+            >
+                <div className="flex flex-1 flex-col gap-4">
 
-                {/* 이미지 + 이름 */}
-                <div className="flex items-start gap-5">
+                    {/* 이미지 + 이름 */}
+                    <div className="flex items-start gap-5">
 
-                    <img
-                        src="http://localhost:9999/images/default_image.png"
-                        alt="기본 이미지"
-                        className="h-20 w-20 rounded-full object-cover"
+                        <img
+                            src={member.profileImage}
+                            alt={`${member?.nickname}의 프로필 이미지`}
+                            className="h-20 w-20 rounded-full object-cover"
+                        />
+
+                        <div>
+                            <h1 className="text-2xl font-medium">
+                                {member.nickname}님 어서오세요!
+                            </h1>
+
+                            <p
+                                className="mt-1 text-sm italic"
+                                style={{ color: "var(--primary-hover)" }}
+                            >
+                                태그라인
+                            </p>
+                        </div>
+
+                    </div>
+
+                    {/* 통계 */}
+                    <div className="grid grid-cols-1 gap-2">
+                        {[
+                            { label: "내가 가진 재료", value: "나의 재료" },
+                            { label: "즐겨찾기", value: "즐겨찾기" },
+                        ].map((stat) => (
+                            <div
+                                key={stat.label}
+                                className="rounded-lg px-4 py-3"
+                                style={{
+                                    backgroundColor: "#fffaf5",
+                                    border: "0.5px solid var(--border)",
+                                }}
+                            >
+                                <div className="flex items-start justify-between">
+                                    <span
+                                        className="text-xs"
+                                        style={{ color: "var(--primary-hover)" }}
+                                    >
+                                        {stat.label}
+                                    </span>
+
+                                    <button
+                                        className="text-xs transition hover:underline cursor-pointer"
+                                        style={{ color: "var(--primary)" }}
+                                    >
+                                        전체보기 →
+                                    </button>
+                                </div>
+
+                                <div className="mt-1 text-xl font-medium">
+                                    {stat.value}
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+
+                    {/* 구분선 */}
+                    <div
+                        style={{
+                            height: "0.5px",
+                            backgroundColor: "var(--border)",
+                        }}
                     />
 
-                    <div>
-                        <h1 className="text-2xl font-medium">
-                            이세형님 어서오세요!
-                        </h1>
-
-                        <p
-                            className="mt-1 text-sm italic"
-                            style={{ color: "var(--primary-hover)" }}
+                    {/* 버튼 */}
+                    <div className="flex gap-2">
+                        <button
+                            className="rounded-lg px-4 py-2 text-sm text-white hover:opacity-90"
+                            style={{ backgroundColor: "var(--primary)" }}
                         >
-                            태그라인
-                        </p>
+                            프로필 수정
+                        </button>
                     </div>
 
                 </div>
-
-                {/* 설명 */}
-                <p className="text-sm leading-7 text-gray-600">
-                    넌 이세형이야
-                </p>
-
-                {/* 통계 */}
-                <div className="grid grid-cols-2 gap-2">
-                    {[
-                        { label: "즐겨찾기", value: "즐겨찾기" },
-                        { label: "최근 본", value: "최근 본 칵테일" },
-                    ].map((stat) => (
-                        <div
-                            key={stat.label}
-                            className="flex flex-col gap-1 rounded-lg px-4 py-3"
-                            style={{
-                                backgroundColor: "#fffaf5",
-                                border: "0.5px solid var(--border)",
-                            }}
-                        >
-                            <span
-                                className="text-xs"
-                                style={{ color: "var(--primary-hover)" }}
-                            >
-                                {stat.label}
-                            </span>
-
-                            <span className="text-xl font-medium">
-                                {stat.value}
-                            </span>
-                        </div>
-                    ))}
-                </div>
-
-                {/* 구분선 */}
-                <div
-                    style={{
-                        height: "0.5px",
-                        backgroundColor: "var(--border)",
-                    }}
-                />
-
-                {/* 버튼 */}
-                <div className="flex gap-2">
-                    <button
-                        className="rounded-lg px-4 py-2 text-sm text-white hover:opacity-90"
-                        style={{ backgroundColor: "var(--primary)" }}
-                    >
-                        프로필 수정
-                    </button>
-
-                    <button
-                        className="rounded-lg px-4 py-2 text-sm hover:opacity-80"
-                        style={{
-                            border: "0.5px solid var(--primary)",
-                            color: "var(--primary-hover)",
-                            backgroundColor: "transparent",
-                        }}
-                    >
-                        즐겨찾기 보기
-                    </button>
-                </div>
-
             </div>
+            )}
         </div>
     );
 }

@@ -32,27 +32,16 @@ public class MemberService {
     }
 
     // 유저 정보를 반환하는 메서드
-    public ResponseEntity<MemberResponseDto> getMember(Long id) {
-        Member member = memberRepository.findById(id)
+    public MemberResponseDto getMember(Long memberId) {
+        Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new RuntimeException("존재하지 않는 회원입니다."));
 
+        // 찾아낸 member정보를 responseDto에 매핑하여 전달
         MemberResponseDto memberResponseDto = new MemberResponseDto(
                 member.getNickname(),
                 member.getProfileImage()
         );
 
-        return ResponseEntity.ok(memberResponseDto);
-    }
-
-    public ResponseEntity<MemberResponseDto> getMyInfo(String email){
-        Member member = null;
-//                .orElseThrow(() -> new RuntimeException("존재하지 않는 회원입니다."));
-
-        MemberResponseDto memberResponseDto = new MemberResponseDto(
-                member.getNickname(),
-                member.getProfileImage()
-        );
-
-        return ResponseEntity.ok(memberResponseDto);
+        return memberResponseDto;
     }
 }

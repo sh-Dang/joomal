@@ -20,19 +20,14 @@ public class MemberController {
 
     @GetMapping("/me")
     public ResponseEntity<MemberResponseDto> getMyInfo(Authentication authentication) {
-        log.debug("멤버 컨트롤러의 겟마이인포 메서드에 진입했습니다.");
-//        String email = authentication.getName();
-//        log.debug("가져온 user의 정보:{}", email);
+        log.debug("컨트롤러의 getMyInfo 메서드에 진입했습니다.");
 
         // 1. accessToken에서 추출한 member_id
         Long memberId =
                 Long.valueOf(authentication.getName());
 
-        // TODO : 2. 추출한 member_id로 DB의 member 조회
-        // DTO에 매핑
-        MemberResponseDto member = null;
-
-        return ResponseEntity.ok(member);
+        // 2. 추출한 member_id로 DB의 member 조회해서 해당 member의 정보를 프론트엔드에 응답
+        return ResponseEntity.ok(memberService.getMember(memberId));
     }
 
 }
