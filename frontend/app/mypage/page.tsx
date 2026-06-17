@@ -15,7 +15,8 @@ export default function MyPage(){
         const token = localStorage.getItem("accessToken");
         if (!token) return;
 
-        fetch("http://localhost:9999/api/member/me", {
+        // 토큰에 Bearer를 붙여 백엔드에 최초 요청을 보냄
+        fetch("http://localhost:9999/api/members/me", {
             headers: {
                 Authorization: `Bearer ${token}`,
             },

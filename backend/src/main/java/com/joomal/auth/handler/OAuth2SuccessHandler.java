@@ -63,7 +63,7 @@ public class OAuth2SuccessHandler
                 .orElseThrow(() ->
                         new RuntimeException("회원이 존재하지 않습니다."));
 
-        String accessToken = jwtProvider.createAccessToken(String.valueOf(member.getId()));
+        String accessToken = jwtProvider.createAccessToken(member.getId());
 
         // 바로 메인으로 보내기
         response.sendRedirect("http://localhost:3000/?accessToken=" + accessToken);

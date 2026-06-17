@@ -16,6 +16,7 @@ import java.util.concurrent.ThreadLocalRandom;
 public class MemberService {
     private final MemberRepository memberRepository;
 
+    // 임의로 할당된 닉네임을 가지고 member를 생성해서 social_account와 관계매핑을 해주는 메서드
     public Member createMember(){
         Member member = new Member();
         String nickname;
@@ -43,8 +44,15 @@ public class MemberService {
         return ResponseEntity.ok(memberResponseDto);
     }
 
-    public Optional<Member> findById(Long id) {
-        return memberRepository.findById(id);
-    }
+    public ResponseEntity<MemberResponseDto> getMyInfo(String email){
+        Member member = null;
+//                .orElseThrow(() -> new RuntimeException("존재하지 않는 회원입니다."));
 
+        MemberResponseDto memberResponseDto = new MemberResponseDto(
+                member.getNickname(),
+                member.getProfileImage()
+        );
+
+        return ResponseEntity.ok(memberResponseDto);
+    }
 }

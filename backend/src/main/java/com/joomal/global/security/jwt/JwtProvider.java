@@ -17,12 +17,12 @@ public class JwtProvider {
     private int exp;
 
     // 서비스(Joomal) 내부에서 사용할 토큰 발급 로직
-    public String createAccessToken(String email) {
+    public String createAccessToken(Long memberId) {
 
         Date now = new Date();
-
+        // 지금 담겨읶는 정보 : member의 Id(PK)
         return Jwts.builder()
-                .subject(email)
+                .subject(memberId.toString())
                 .issuedAt(now)
                 .expiration(
                         new Date(now.getTime() + exp)
@@ -32,5 +32,16 @@ public class JwtProvider {
                         Jwts.SIG.HS256
                 )
                 .compact();
+    }
+
+    // 요청에 들어온 Jwt를 파싱해주는 메서드(토큰안의 정보를 백엔드에서 사용할 수 있도록)
+    public String getSubject(String token) {
+
+        return Jwts.parser()
+                .verifyWith(Keys.hmacShaKeyFor(secret.getBytes()))
+                .build()
+                .parseSignedClaims(token)
+                .getPayload()
+                .getSubject();
     }
 }

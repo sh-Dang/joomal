@@ -45,6 +45,7 @@ public class AuthService {
         }
 
         // 최초 가입 회원 처리
+        // 자동으로 social_account와 매핑됨(DB에서 연결됨으로서)
         Member member = memberService.createMember();
 
         socialAccountService.createSocialAccount(
