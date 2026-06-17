@@ -1,6 +1,8 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
+
 
 interface Member{
     nickname: string;
@@ -10,6 +12,7 @@ interface Member{
 export default function MyPage(){
 
     const [member, setMember] = useState<Member | null>(null);
+    const router = useRouter();
     
     // 최초 실행하여 유저정보를 불러오는 메서드
     useEffect(() => {
@@ -46,7 +49,7 @@ export default function MyPage(){
             >
                 <div className="flex flex-1 flex-col gap-4">
 
-                    {/* 이미지 + 이름 */}
+                    {/* 이미지 + 닉네임 */}
                     <div className="flex items-start gap-5">
 
                         <img
@@ -55,26 +58,19 @@ export default function MyPage(){
                             className="h-20 w-20 rounded-full object-cover"
                         />
 
-                        <div>
-                            <h1 className="text-2xl font-medium">
-                                {member.nickname}님 어서오세요!
-                            </h1>
-
-                            <p
-                                className="mt-1 text-sm italic"
-                                style={{ color: "var(--primary-hover)" }}
-                            >
-                                태그라인
-                            </p>
-                        </div>
-
+                        <h1 className="text-2xl font-medium">
+                            {member.nickname}님 어서오세요!
+                        </h1>
                     </div>
 
                     {/* 통계 */}
                     <div className="grid grid-cols-1 gap-2">
                         {[
-                            { label: "내가 가진 재료", value: "나의 재료" },
-                            { label: "즐겨찾기", value: "즐겨찾기" },
+                            {
+                                label: "내가 가진 재료",
+                                value: "나의 재료",
+                                href: "/mypage/ingredients",
+                            },
                         ].map((stat) => (
                             <div
                                 key={stat.label}
@@ -93,6 +89,7 @@ export default function MyPage(){
                                     </span>
 
                                     <button
+                                        onClick={() => router.push(stat.href)}
                                         className="text-xs transition hover:underline cursor-pointer"
                                         style={{ color: "var(--primary)" }}
                                     >
@@ -106,7 +103,7 @@ export default function MyPage(){
                             </div>
                         ))}
                     </div>
-
+                    
                     {/* 구분선 */}
                     <div
                         style={{
