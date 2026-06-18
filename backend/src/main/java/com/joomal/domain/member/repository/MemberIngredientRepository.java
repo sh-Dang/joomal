@@ -1,5 +1,6 @@
 package com.joomal.domain.member.repository;
 
+import com.joomal.domain.ingredient.enumtype.Type;
 import com.joomal.domain.member.entity.MemberIngredient;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -38,5 +39,17 @@ public interface MemberIngredientRepository extends JpaRepository<MemberIngredie
     boolean existsByMemberIdAndIngredientId(
             Long memberId,
             Long ingredientId
+    );
+
+    @Query("""
+        SELECT mi
+        FROM MemberIngredient mi
+        JOIN mi.ingredient i
+        WHERE mi.member.id = :memberId
+        AND (:type IS NULL OR i.type = :type)
+    """)
+    List<MemberIngredient> findByMemberIdAndIngredientType(
+            @Param("memberId") Long memberId,
+            @Param("type") Type type
     );
 }

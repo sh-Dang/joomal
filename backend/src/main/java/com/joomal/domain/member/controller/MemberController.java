@@ -1,6 +1,6 @@
 package com.joomal.domain.member.controller;
 
-import com.joomal.domain.ingredient.entity.Ingredient;
+import com.joomal.domain.ingredient.enumtype.Type;
 import com.joomal.domain.member.dto.MemberIngredientResponseDto;
 import com.joomal.domain.member.dto.MemberResponseDto;
 import com.joomal.domain.member.service.MemberIngredientService;
@@ -34,14 +34,17 @@ public class MemberController {
 
     // 내가 가진 재료를 불러오는 메서드
     @GetMapping("/me/ingredients")
-    public List<MemberIngredientResponseDto> getMyIngredient(Authentication authentication){
+    public List<MemberIngredientResponseDto> getMyIngredient(
+            Authentication authentication,
+            @RequestParam(required = false) Type type
+    ){
         log.debug("컨트롤러의 내가 가진 재료를 불러오는 메서드에 진입했습니다.");
 
         // 1. accessToken에서 추출한 member_id
         Long memberId = Long.valueOf(authentication.getName());
 
         // 2. 추출한 member_id로 DB의 memberIngredient를 조회해서 해당 정보를 프론트엔드에 응답
-        return memberIngredientService.getMemberIngredient(memberId);
+        return memberIngredientService.getMemberIngredient(memberId, type);
     }
 
     @PostMapping("/me/ingredients/{id}")

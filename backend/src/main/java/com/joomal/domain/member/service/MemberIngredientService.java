@@ -1,5 +1,6 @@
 package com.joomal.domain.member.service;
 
+import com.joomal.domain.ingredient.enumtype.Type;
 import com.joomal.domain.member.dto.MemberIngredientResponseDto;
 import com.joomal.domain.member.entity.MemberIngredient;
 import com.joomal.domain.member.repository.MemberIngredientRepository;
@@ -15,12 +16,16 @@ public class MemberIngredientService {
 
     private final MemberIngredientRepository memberIngredientRepository;
 
-    public List<MemberIngredientResponseDto> getMemberIngredient(Long memberId){
+    public List<MemberIngredientResponseDto> getMemberIngredient(Long memberId, Type type){
 
-        List<MemberIngredient> memberIngredients =
-                memberIngredientRepository.findByMemberId(memberId);
+        List<MemberIngredient> memberIngredients;
 
-        // 추출한 List<MemberIngredient>를 Dto List에 매핑
+        if (type == null) {
+            memberIngredients = memberIngredientRepository.findByMemberId(memberId);
+        } else {
+            memberIngredients = memberIngredientRepository.findByMemberIdAndIngredientType(memberId, type);
+        }
+
         return memberIngredients.stream()
                 .map(MemberIngredientResponseDto::from)
                 .toList();

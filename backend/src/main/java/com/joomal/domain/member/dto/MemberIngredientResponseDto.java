@@ -4,7 +4,7 @@ import com.joomal.domain.ingredient.entity.Ingredient;
 import com.joomal.domain.member.entity.MemberIngredient;
 
 public record MemberIngredientResponseDto(
-        Long ingredientId,
+        Long id,
         String ingredientKorName,
         String ingredientEngName,
         String imageUrl
