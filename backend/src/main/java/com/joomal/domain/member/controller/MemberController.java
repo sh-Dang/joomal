@@ -1,5 +1,6 @@
 package com.joomal.domain.member.controller;
 
+import com.joomal.domain.ingredient.entity.Ingredient;
 import com.joomal.domain.member.dto.MemberIngredientResponseDto;
 import com.joomal.domain.member.dto.MemberResponseDto;
 import com.joomal.domain.member.service.MemberIngredientService;
@@ -8,9 +9,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -44,4 +43,39 @@ public class MemberController {
         // 2. 추출한 member_id로 DB의 memberIngredient를 조회해서 해당 정보를 프론트엔드에 응답
         return memberIngredientService.getMemberIngredient(memberId);
     }
+
+    @PostMapping("/me/ingredients/{id}")
+    public ResponseEntity<Void> addToMyIngredient(
+            Authentication authentication,
+            @PathVariable("id") Long ingredientId
+    ) {
+        log.debug("나의 술장고에 재료를 추가하는 메서드에 진입했습니다.");
+//        accessToken에서 추출한 member_id
+        Long memberId = Long.valueOf(authentication.getName());
+
+        memberIngredientService.addToMyIngredient(
+                memberId,
+                ingredientId
+        );
+
+        return ResponseEntity.ok().build();
+    }
+
+    @DeleteMapping("/me/ingredients/{id}")
+    public ResponseEntity<Void> deleteMyIngredient(
+            Authentication authentication,
+            @PathVariable("id") Long ingredientId
+    ) {
+        log.debug("재료삭제 메서드에 진입했습니다.");
+//        accessToken에서 추출한 member_id
+        Long memberId = Long.valueOf(authentication.getName());
+
+        memberIngredientService.deleteMyIngredient(
+                memberId,
+                ingredientId
+        );
+
+        return ResponseEntity.ok().build();
+    }
+
 }

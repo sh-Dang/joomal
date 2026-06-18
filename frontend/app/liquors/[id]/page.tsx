@@ -22,16 +22,35 @@ export default function LiquorDetails(){
 
     // 내가 가진 재료에 추가됨
     const addToMyIngredient = async () => {
+        if (!ingredientDetail) return; // 존재하지 않는 재료일 경우 종료
+        
         const ok = window.confirm("내가 가진 재료에 추가하시겠습니까?");
+        if (!ok) return;
 
-        if (!ok) {
-            return;
+        try {
+            const token = localStorage.getItem("accessToken");
+
+            const response = await fetch(
+                `http://localhost:9999/api/members/me/ingredients/${ingredientDetail.id}`,
+                {
+                    method: "POST",
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                }
+            );
+
+            if (!response.ok) {
+                alert(await response.text());
+                return;
+            }
+
+            setIsOwned(true);
+            alert("내가 가진 재료에 추가되었습니다.");
+        } catch (error) {
+            console.error(error);
+            alert("재료 추가 중 오류가 발생했습니다.");
         }
-
-        // API 호출
-        // await fetch(...);
-        setIsOwned(!isOwned);
-        alert("내가 가진 재료에 추가되었습니다.");
     };
 
     useEffect(() => {
