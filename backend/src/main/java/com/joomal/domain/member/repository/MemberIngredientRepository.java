@@ -41,10 +41,11 @@ public interface MemberIngredientRepository extends JpaRepository<MemberIngredie
             Long ingredientId
     );
 
+    // Type이 들어오지 않으면 null, 들어오면 해당하는 값으로 조회하는 쿼리
     @Query("""
         SELECT mi
         FROM MemberIngredient mi
-        JOIN mi.ingredient i
+        JOIN FETCH mi.ingredient i
         WHERE mi.member.id = :memberId
         AND (:type IS NULL OR i.type = :type)
     """)

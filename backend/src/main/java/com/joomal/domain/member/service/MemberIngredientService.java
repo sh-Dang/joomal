@@ -6,25 +6,24 @@ import com.joomal.domain.member.entity.MemberIngredient;
 import com.joomal.domain.member.repository.MemberIngredientRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class MemberIngredientService {
 
     private final MemberIngredientRepository memberIngredientRepository;
 
     public List<MemberIngredientResponseDto> getMemberIngredient(Long memberId, Type type){
-
+        log.debug("@@@전달된 타입 매개변수: {}", type); // 최초 null반환 확인
         List<MemberIngredient> memberIngredients;
 
-        if (type == null) {
-            memberIngredients = memberIngredientRepository.findByMemberId(memberId);
-        } else {
-            memberIngredients = memberIngredientRepository.findByMemberIdAndIngredientType(memberId, type);
-        }
+        // repository에 쿼리구현
+        memberIngredients = memberIngredientRepository.findByMemberIdAndIngredientType(memberId, type);
 
         return memberIngredients.stream()
                 .map(MemberIngredientResponseDto::from)
