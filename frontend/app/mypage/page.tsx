@@ -71,6 +71,11 @@ export default function MyPage(){
                                 value: "나의 재료",
                                 href: "/mypage/ingredients",
                             },
+                            {
+                                label: "나의 즐겨찾기",
+                                value: "즐겨찾기",
+                                href: "/mypage/favorites",
+                            },
                         ].map((stat) => (
                             <div
                                 key={stat.label}

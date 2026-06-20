@@ -90,6 +90,12 @@ export default function MyIngredients() {
         <div className="mx-auto max-w-7xl px-10 py-10">
             {/* 헤더 + 탭 */}
             <div className="mb-8 flex items-center justify-between">
+                <button
+                    onClick={() => router.back()}
+                    className="h-fit rounded-lg border border-gray-300 px-4 py-2 text-sm font-medium text-gray-700 transition hover:bg-gray-100 cursor-pointer"
+                >
+                    ←
+                </button>
                 <h1 className="text-4xl font-bold">나의 술장고</h1>
 
                 <div className="flex gap-2">

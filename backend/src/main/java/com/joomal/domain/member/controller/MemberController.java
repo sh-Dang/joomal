@@ -4,6 +4,7 @@ import com.joomal.domain.ingredient.enumtype.Type;
 import com.joomal.domain.member.dto.FavoriteResponseDto;
 import com.joomal.domain.member.dto.MemberIngredientResponseDto;
 import com.joomal.domain.member.dto.MemberResponseDto;
+import com.joomal.domain.member.enumtype.FavoriteType;
 import com.joomal.domain.member.service.FavoriteService;
 import com.joomal.domain.member.service.MemberIngredientService;
 import com.joomal.domain.member.service.MemberService;
@@ -37,12 +38,14 @@ public class MemberController {
     }
 
     // 즐겨찾기 불러오는 메서드
-    @GetMapping("/me/favorites")
-    public List<FavoriteResponseDto> getMyFavorites(Authentication authentication){
+    @GetMapping("/me/favorite")
+    public List<FavoriteResponseDto> getMyFavorites(Authentication authentication, @RequestParam(required = false) String type){
         log.debug("나의 즐겨찾기 메서드에 진입했습니다.");
-//        Long memberId = Long.valueOf(authentication.getName());
-        Long memberId = 1L;
-        List<FavoriteResponseDto> favoriteResponseDto = favoriteService.getFavorites(memberId);
+        Long memberId = Long.valueOf(authentication.getName());
+
+        // type이 null이면 전체 조회, 아니면 Enum 변환 후 필터링
+        FavoriteType favoriteType = (type != null) ? FavoriteType.valueOf(type.toUpperCase()) : null;
+        List<FavoriteResponseDto> favoriteResponseDto = favoriteService.getFavorites(memberId, favoriteType);
 
         log.debug("들어온 dto는 {}",favoriteResponseDto.toString());
         return favoriteResponseDto;
