@@ -18,7 +18,7 @@ public class MemberIngredientService {
 
     private final MemberIngredientRepository memberIngredientRepository;
 
-    public List<MemberIngredientResponseDto> getMemberIngredient(Long memberId, Type type){
+    public List<MemberIngredientResponseDto> getMemberIngredients(Long memberId, Type type){
         log.debug("@@@전달된 타입 매개변수: {}", type); // 최초 null반환 확인
         List<MemberIngredient> memberIngredients;
 

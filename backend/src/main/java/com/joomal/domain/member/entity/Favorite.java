@@ -1,23 +1,24 @@
 package com.joomal.domain.member.entity;
 
-import com.joomal.domain.cocktail.entity.Cocktail;
-import com.joomal.domain.ingredient.entity.Ingredient;
+import com.joomal.domain.member.enumtype.FavoriteType;
 import jakarta.persistence.*;
+import lombok.Getter;
 
 @Entity
+@Getter
 public class Favorite {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "favorite_id")
+    @Column(name="favorite_id")
     private Long id;
 
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
-    private Member memberId;
+    private Member member;
 
-    @JoinColumn(name = "cocktail_id")
-    private Cocktail cocktailId;
+    @Enumerated(EnumType.STRING)
+    private FavoriteType targetType;
 
-    @JoinColumn(name = "ingredient_id")
-    private Ingredient ingredientId;
-
+    private Long targetId;
 }
