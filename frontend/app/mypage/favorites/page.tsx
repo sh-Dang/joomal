@@ -27,8 +27,8 @@ export default function MyFavorites(){
 
         const url =
             type && type !== "ALL"
-            ? `http://localhost:9999/api/members/me/favorite?type=${type}`
-            : `http://localhost:9999/api/members/me/favorite`;
+            ? `http://localhost:9999/api/members/me/favorites?type=${type}`
+            : `http://localhost:9999/api/members/me/favorites`;
 
         const res = await fetch(url, {
             headers: {

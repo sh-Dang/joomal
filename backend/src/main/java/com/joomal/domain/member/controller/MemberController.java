@@ -38,7 +38,7 @@ public class MemberController {
     }
 
     // 즐겨찾기 불러오는 메서드
-    @GetMapping("/me/favorite")
+    @GetMapping("/me/favorites")
     public List<FavoriteResponseDto> getMyFavorites(Authentication authentication, @RequestParam(required = false) String type){
         log.debug("나의 즐겨찾기 메서드에 진입했습니다.");
         Long memberId = Long.valueOf(authentication.getName());
