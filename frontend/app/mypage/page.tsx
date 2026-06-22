@@ -67,9 +67,9 @@ export default function MyPage(){
                 setMember(memberData);
 
                 // 미리보기용 4개만
-                setMemberIngredients(memberIngredientData.slice(0, 4));
+                setMemberIngredients(memberIngredientData.slice(0, 10));
                 console.log(memberIngredients);
-                setFavorites(favoriteData.slice(0, 4));
+                setFavorites(favoriteData.slice(0, 10));
             })
             .catch(console.error);
     }, []);
@@ -118,6 +118,7 @@ export default function MyPage(){
                                 onClick={() => router.push("/mypage/ingredients")}
                                 className="text-sm transition-opacity hover:opacity-70"
                                 style={{ color: "var(--primary)" }}
+                                cursor-pointer
                             >
                                 전체보기 →
                             </button>
@@ -128,7 +129,7 @@ export default function MyPage(){
                             {memberIngredients.map((memberIngredient) => (
                                 <div
                                     key={memberIngredient.id}
-                                    className="flex flex-shrink-0 flex-col items-center gap-1 rounded-lg border px-2 py-2 transition-opacity hover:opacity-75 cursor-pointer"
+                                    className="flex flex-shrink-0 flex-col items-center gap-1 rounded-lg border px-2 py-2 transition-opacity hover:opacity-75"
                                     style={{
                                         minWidth: 70,
                                         borderColor: "var(--border)",
@@ -173,6 +174,7 @@ export default function MyPage(){
                                 onClick={() => router.push("/mypage/favorites")}
                                 className="text-sm transition-opacity hover:opacity-70"
                                 style={{ color: "var(--primary)" }}
+                                cursor-pointer
                             >
                                 전체보기 →
                             </button>
@@ -183,7 +185,7 @@ export default function MyPage(){
                             {favorites.map((cocktail) => (
                                 <div
                                     key={cocktail.id}
-                                    className="flex flex-shrink-0 flex-col items-center gap-1 rounded-lg border px-2 py-2 transition-opacity hover:opacity-75 cursor-pointer"
+                                    className="flex flex-shrink-0 flex-col items-center gap-1 rounded-lg border px-2 py-2 transition-opacity hover:opacity-75"
                                     style={{
                                         minWidth: 70,
                                         borderColor: "var(--border)",
