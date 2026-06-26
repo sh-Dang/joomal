@@ -2,6 +2,8 @@
 
 import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
+// npm install lucide-react
+import { Star } from "lucide-react";
 
 interface RecipeIngredient {
     id: number;
@@ -34,14 +36,77 @@ export default function CocktailDetails(){
     const { id } = useParams();
     const router = useRouter(); 
     const [cocktailDetail, setCocktailDetail] = useState<CocktailDetail | null>(null);
+    const [isFavorite, setIsFavorite] = useState(false); // 즐겨찾기 상태인지 점검
+
+    const toggleFavorite = async () => {
+        try {
+            const token = localStorage.getItem("accessToken");
+
+            if (!token) return;
+
+            // 현재 상태 기준으로 분기
+            if (isFavorite) {
+                await fetch(
+                    `http://localhost:9999/api/members/me/favorites/cocktails/${id}`,
+                    {
+                        method: "DELETE",
+                        headers: {
+                            Authorization: `Bearer ${token}`,
+                        },
+                    }
+                );
+            } else {
+                await fetch(
+                    `http://localhost:9999/api/members/me/favorites/cocktails/${id}`,
+                    {
+                        method: "POST",
+                        headers: {
+                            Authorization: `Bearer ${token}`,
+                        },
+                    }
+                );
+            }
+
+            // UI 즉시 반영
+            setIsFavorite(!isFavorite);
+        } catch (error) {
+            console.error(error);
+        }
+    };
 
     useEffect(() => {
-        fetch(`http://localhost:9999/api/cocktails/${id}`)
-            .then((res) => res.json())
-            .then((data) => {
-                console.log(data);
-                setCocktailDetail(data)
-            });
+        const fetchData = async () => {
+            try {
+                const token = localStorage.getItem("accessToken");
+
+                // 1. 칵테일 상세 조회
+                const detailResponse = await fetch(
+                    `http://localhost:9999/api/cocktails/${id}`
+                );
+
+                const detailData = await detailResponse.json();
+                setCocktailDetail(detailData);
+
+                // 2. 즐겨찾기 여부 조회
+                if (token) {
+                    const favoriteResponse = await fetch(
+                        `http://localhost:9999/api/members/me/favorites/cocktails/${id}/exists`,
+                        {
+                            headers: {
+                                Authorization: `Bearer ${token}`,
+                            },
+                        }
+                    );
+
+                    const favoriteData = await favoriteResponse.json();
+                    setIsFavorite(favoriteData);
+                }
+            } catch (error) {
+                console.error(error);
+            }
+        };
+
+        fetchData();
     }, [id]);
 
     return (
@@ -58,9 +123,18 @@ export default function CocktailDetails(){
                         <div className="flex items-start justify-between gap-8">
                             <div className="flex-1">
                                 {/* 칵테일 이름 */}
-                                <h1 className="text-4xl font-bold">
-                                    {cocktailDetail.korName}
-                                </h1>
+                                <div className="flex items-center justify-between">
+                                    <h1 className="text-4xl font-bold">
+                                        {cocktailDetail.korName}
+                                    </h1>
+                                    <button onClick={toggleFavorite}>
+                                    <Star
+                                        size={28}
+                                        fill={isFavorite ? "#facc15" : "none"}
+                                        stroke={isFavorite ? "#facc15" : "#9ca3af"}
+                                    />
+                                    </button>
+                                </div>
 
                                 <p className="mt-2 text-xl text-gray-500 italic">
                                     {cocktailDetail.engName}

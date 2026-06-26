@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
+import { Star } from "lucide-react";
 
 interface IngredientDetail {
     id: number;
@@ -18,6 +19,43 @@ export default function IngredientDetails(){
     const [ingredientDetail, setIngredientDetail] = useState<IngredientDetail | null>(null);
     // 이미 가진재료인지 아닌지 판단하는 플래그
     const [isOwned, setIsOwned] = useState(false);
+    const [isFavorite, setIsFavorite] = useState(false); // 즐겨찾기 상태인지 점검
+
+    const toggleFavorite = async () => {
+        try {
+            const token = localStorage.getItem("accessToken");
+
+            if (!token) return;
+
+            // 현재 상태 기준으로 분기
+            if (isFavorite) {
+                await fetch(
+                    `http://localhost:9999/api/members/me/favorites/ingredients/${id}`,
+                    {
+                        method: "DELETE",
+                        headers: {
+                            Authorization: `Bearer ${token}`,
+                        },
+                    }
+                );
+            } else {
+                await fetch(
+                    `http://localhost:9999/api/members/me/favorites/ingredients/${id}`,
+                    {
+                        method: "POST",
+                        headers: {
+                            Authorization: `Bearer ${token}`,
+                        },
+                    }
+                );
+            }
+
+            // UI 즉시 반영
+            setIsFavorite(!isFavorite);
+        } catch (error) {
+            console.error(error);
+        }
+    };
 
     const deleteFromMyIngredient = async () => {
         if (!ingredientDetail) return; // 존재하지 않는 재료일 경우 종료
@@ -111,6 +149,22 @@ export default function IngredientDetails(){
                     const owned = await ownedResponse.json();
                     setIsOwned(owned);
                 }
+
+                // 3. 즐겨찾기 여부 조회
+                if (token) {
+                    const favoriteResponse = await fetch(
+                        `http://localhost:9999/api/members/me/favorites/cocktails/${id}/exists`,
+                        {
+                            headers: {
+                                Authorization: `Bearer ${token}`,
+                            },
+                        }
+                    );
+
+                    const favoriteData = await favoriteResponse.json();
+                    setIsFavorite(favoriteData);
+                }
+                
             } catch (error) {
                 console.error(error);
             }
@@ -134,9 +188,18 @@ export default function IngredientDetails(){
 
                         {/* 왼쪽 내용 */}
                         <div className="flex-1">
-                            <h1 className="text-4xl font-bold">
-                                {ingredientDetail.korName}
-                            </h1>
+                            <div className="flex items-center justify-between">
+                                <h1 className="text-4xl font-bold">
+                                    {ingredientDetail.korName}
+                                </h1>
+                                <button onClick={toggleFavorite}>
+                                <Star
+                                    size={28}
+                                    fill={isFavorite ? "#facc15" : "none"}
+                                    stroke={isFavorite ? "#facc15" : "#9ca3af"}
+                                />
+                                </button>
+                            </div>
 
                             <p className="mt-2 text-xl text-gray-500 italic">
                                 {ingredientDetail.engName}

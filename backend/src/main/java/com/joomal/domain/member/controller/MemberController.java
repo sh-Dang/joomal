@@ -115,4 +115,52 @@ public class MemberController {
                 memberIngredientService.hasIngredient(memberId, ingredientId)
         );
     }
+
+    // 즐겨찾기에 칵테일 추가
+    @PostMapping("/me/favorites/cocktails/{targetId}")
+    public ResponseEntity<Void> addCocktailFavorite(
+            Authentication authentication,
+            @PathVariable Long targetId) {
+
+        Long memberId = Long.valueOf(authentication.getName());
+        favoriteService.addCocktailFavorite(memberId, targetId);
+        return ResponseEntity.ok().build();
+    }
+
+    // 즐겨찾기에 재료 추가
+    @PostMapping("/me/favorites/ingredients/{targetId}")
+    public ResponseEntity<Void> addIngredientFavorite(
+            Authentication authentication,
+            @PathVariable Long targetId) {
+
+        Long memberId = Long.valueOf(authentication.getName());
+        favoriteService.addIngredientFavorite(memberId, targetId);
+        return ResponseEntity.ok().build();
+    }
+
+    // 즐겨찾기에 칵테일이 존재하는지
+    @GetMapping("/me/favorites/cocktails/{targetId}/exists")
+    public ResponseEntity<Boolean> isCocktailFavorite(
+            Authentication authentication,
+            @PathVariable Long targetId) {
+
+        Long memberId = Long.valueOf(authentication.getName());
+
+        return ResponseEntity.ok(
+                favoriteService.isCocktailFavorite(memberId, targetId)
+        );
+    }
+
+    // 즐겨찾기에 재료가 존재하는지
+    @GetMapping("/me/favorites/ingredients/{targetId}/exists")
+    public ResponseEntity<Boolean> isIngredientFavorite(
+            Authentication authentication,
+            @PathVariable Long targetId) {
+
+        Long memberId = Long.valueOf(authentication.getName());
+
+        return ResponseEntity.ok(
+                favoriteService.isIngredientFavorite(memberId, targetId)
+        );
+    }
 }
