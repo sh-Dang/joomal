@@ -68,4 +68,13 @@ public class MemberIngredientService {
                 ingredientId
         );
     }
+
+    // 재료를 가지고있는지 조회해서 클라이언트에 반환할 메서드
+    public boolean hasIngredient(Long memberId, Long ingredientId) {
+        return memberIngredientRepository.existsByMemberIdAndIngredientId(
+                memberId,
+                ingredientId
+        );
+    }
+
 }

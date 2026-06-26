@@ -18,7 +18,37 @@ export default function IngredientDetails(){
     const [ingredientDetail, setIngredientDetail] = useState<IngredientDetail | null>(null);
     // 이미 가진재료인지 아닌지 판단하는 플래그
     const [isOwned, setIsOwned] = useState(false);
-    // const [isOwned, setIsOwned] = useState(true);
+
+    const deleteFromMyIngredient = async () => {
+        if (!ingredientDetail) return; // 존재하지 않는 재료일 경우 종료
+        const ok = window.confirm("나의 재료에서 삭제할까요?");
+        if (!ok) return;
+
+        try {
+            const token = localStorage.getItem("accessToken");
+
+            const response = await fetch(
+                `http://localhost:9999/api/members/me/ingredients/${ingredientDetail.id}`,
+                {
+                    method: "DELETE",
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                }
+            );
+
+            if (!response.ok) {
+                alert(await response.text());
+                return;
+            }
+
+            setIsOwned(false);
+            alert("나의 재료에서 제거했습니다.");
+        } catch (error) {
+            console.error(error);
+            alert("재료 삭제 중 오류가 발생했습니다.");
+        }
+    }
 
     // 내가 가진 재료에 추가됨
     const addToMyIngredient = async () => {
@@ -53,12 +83,40 @@ export default function IngredientDetails(){
     };
 
     useEffect(() => {
-        fetch(`http://localhost:9999/api/ingredients/${id}`)
-            .then((res) => res.json())
-            .then((data) => {
-                console.log(data);
-                setIngredientDetail(data)
-            });
+        const fetchData = async () => {
+            try {
+                const token = localStorage.getItem("accessToken");
+
+                // 1. 재료 상세 조회
+                const detailResponse = await fetch(
+                    `http://localhost:9999/api/ingredients/${id}`
+                );
+
+                const detailData = await detailResponse.json();
+
+                console.log(detailData);
+                setIngredientDetail(detailData);
+
+                // 2. 로그인한 경우에만 보유 여부 조회
+                if (token) {
+                    const ownedResponse = await fetch(
+                        `http://localhost:9999/api/members/me/ingredients/${id}/exists`,
+                        {
+                            headers: {
+                                Authorization: `Bearer ${token}`,
+                            },
+                        }
+                    );
+
+                    const owned = await ownedResponse.json();
+                    setIsOwned(owned);
+                }
+            } catch (error) {
+                console.error(error);
+            }
+        };
+
+        fetchData();
     }, [id]);
 
     return (
@@ -98,13 +156,14 @@ export default function IngredientDetails(){
 
                             {/* 내가 가진 재료에 추가하는 버튼 */}
                             {isOwned ? (
-                                <div className="inline-block mt-8 rounded-xl bg-gray-200 px-6 py-3 text-center font-semibold text-gray-500 shadow-md transition duration-200">
-                                    ✅ 이미 내가 가진 재료입니다.
-                                </div>
+                                <button onClick={deleteFromMyIngredient}
+                                    className="mt-8 rounded-xl bg-gray-200 px-6 py-3 font-semibold text-gray shadow-md transition duration-200 hover:bg-gray-600 hover:shadow-lg active:scale-95 cursor-pointer">
+                                    이 재료를 가지고 있어요
+                                </button>
                             ) : (
                                 <button onClick={addToMyIngredient}
                                     className="mt-8 rounded-xl bg-amber-500 px-6 py-3 font-semibold text-white shadow-md transition duration-200 hover:bg-amber-600 hover:shadow-lg active:scale-95 cursor-pointer">
-                                    내가 가진 재료에 추가
+                                    나의 재료에 추가
                                 </button>
                             )}
                         </div>

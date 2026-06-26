@@ -103,4 +103,16 @@ public class MemberController {
         return ResponseEntity.ok().build();
     }
 
+    // 내가가진 재료인지 아닌지를 판단해서 반환해주는 메서드
+    @GetMapping("/me/ingredients/{ingredientId}/exists")
+    public ResponseEntity<Boolean> existsIngredient(
+            Authentication authentication,
+            @PathVariable Long ingredientId) {
+
+        Long memberId = Long.valueOf(authentication.getName());
+
+        return ResponseEntity.ok(
+                memberIngredientService.hasIngredient(memberId, ingredientId)
+        );
+    }
 }

@@ -144,11 +144,13 @@ export default function MyFavorites(){
                             shadow-md
                             cursor-pointer
                         "
-                        onClick={() =>
-                            router.push(
-                                `/ingredients/${favorite.id}`
-                            )
-                        }
+                        onClick={() => {
+                            const path =
+                                favorite.favoriteType === "COCKTAIL"
+                                    ? `/cocktails/${favorite.targetId}`
+                                    : `/ingredients/${favorite.targetId}`
+                            router.push(path);
+                        }}
                     >
                         {/* 이미지 */}
                         <img

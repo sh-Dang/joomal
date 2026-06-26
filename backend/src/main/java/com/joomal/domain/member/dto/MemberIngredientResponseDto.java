@@ -8,6 +8,7 @@ public record MemberIngredientResponseDto(
         String ingredientKorName,
         String ingredientEngName,
         String imageUrl
+
 ) {
 
     public static MemberIngredientResponseDto from(MemberIngredient entity) {

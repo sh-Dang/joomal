@@ -57,7 +57,7 @@ export default function MyPage(){
         Promise.all([
             fetch("http://localhost:9999/api/members/me", { headers }),
             fetch("http://localhost:9999/api/members/me/ingredients", { headers }),
-            fetch("http://localhost:9999/api/members/me/favorite", { headers }),
+            fetch("http://localhost:9999/api/members/me/favorites", { headers }),
         ])
             .then(async ([memberRes, memberIngredientRes, favoriteRes]) => {
                 const memberData = await memberRes.json();
@@ -66,9 +66,8 @@ export default function MyPage(){
 
                 setMember(memberData);
 
-                // 미리보기용 4개만
+                // 미리보기용 10개
                 setMemberIngredients(memberIngredientData.slice(0, 10));
-                console.log(memberIngredients);
                 setFavorites(favoriteData.slice(0, 10));
             })
             .catch(console.error);
@@ -116,9 +115,8 @@ export default function MyPage(){
  
                             <button
                                 onClick={() => router.push("/mypage/ingredients")}
-                                className="text-sm transition-opacity hover:opacity-70"
+                                className="text-sm transition-opacity hover:opacity-70 cursor-pointer"
                                 style={{ color: "var(--primary)" }}
-                                cursor-pointer
                             >
                                 전체보기 →
                             </button>
@@ -172,9 +170,8 @@ export default function MyPage(){
  
                             <button
                                 onClick={() => router.push("/mypage/favorites")}
-                                className="text-sm transition-opacity hover:opacity-70"
+                                className="text-sm transition-opacity hover:opacity-70 cursor-pointer"
                                 style={{ color: "var(--primary)" }}
-                                cursor-pointer
                             >
                                 전체보기 →
                             </button>
