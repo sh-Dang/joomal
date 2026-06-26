@@ -99,7 +99,7 @@ export default function CocktailDetails(){
                     );
 
                     const favoriteData = await favoriteResponse.json();
-                    setIsFavorite(favoriteData);
+                    setIsFavorite(favoriteData); // true || false
                 }
             } catch (error) {
                 console.error(error);

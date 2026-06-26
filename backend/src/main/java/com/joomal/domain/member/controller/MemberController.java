@@ -163,4 +163,22 @@ public class MemberController {
                 favoriteService.isIngredientFavorite(memberId, targetId)
         );
     }
+
+    @DeleteMapping("/me/favorites/cocktails/{targetId}")
+    public ResponseEntity<Void> deleteCocktailFavorite(
+            Authentication authentication,
+            @PathVariable Long targetId){
+        Long memberId = Long.valueOf(authentication.getName());
+        favoriteService.deleteCocktailFavorite(memberId, targetId);
+        return ResponseEntity.ok().build();
+    }
+
+    @DeleteMapping("/me/favorites/ingredients/{targetId}")
+    public ResponseEntity<Void> deleteIngredientFavorite(
+            Authentication authentication,
+            @PathVariable Long targetId) {
+        Long memberId = Long.valueOf(authentication.getName());
+        favoriteService.deleteIngredientFavorite(memberId, targetId);
+        return ResponseEntity.ok().build();
+    }
 }

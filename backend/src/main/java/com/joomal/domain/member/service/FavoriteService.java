@@ -26,6 +26,7 @@ public class FavoriteService {
     private final IngredientRepository ingredientRepository;
     private final EntityManager entityManager;
 
+    // 즐겨찾기 전체 조회 메서드
     public List<FavoriteResponseDto> getFavorites(Long memberId, FavoriteType type) {
         List<Favorite> favorites = (type != null)
                 ? favoriteRepository.findByMemberIdAndTargetType(memberId, type)
@@ -36,6 +37,7 @@ public class FavoriteService {
                 .collect(Collectors.toList());
     }
 
+    // 즐겨찾기 엔터티를 조회하여 응답 Dto로 변환해주는 메서드
     private FavoriteResponseDto toResponseDto(Favorite favorite) {
         return switch (favorite.getTargetType()) {
 
@@ -103,7 +105,6 @@ public class FavoriteService {
         }
     }
 
-
     // 재료(ingredient) 즐겨찾기 추가
     public void addIngredientFavorite(Long memberId, Long targetId){
 
@@ -124,6 +125,37 @@ public class FavoriteService {
 
             // DB 저장
             favoriteRepository.save(favorite);
+        }
+    }
+
+    public void deleteCocktailFavorite(Long memberId, Long targetId) {
+        // 즐겨찾기 타입 명시
+        FavoriteType targetType = FavoriteType.COCKTAIL;
+
+        // 즐겨찾기에 존재하는지 우선 검증
+        boolean exists = favoriteRepository
+                .existsByMemberIdAndTargetTypeAndTargetId(memberId, targetType, targetId);
+
+        // 존재할 경우
+        if(exists){
+            // DB에서 해당 엔터티 제거
+            favoriteRepository.deleteByCondition(memberId, targetType, targetId);
+        }
+
+    }
+
+    public void deleteIngredientFavorite(Long memberId, Long targetId) {
+        // 즐겨찾기 타입 명시
+        FavoriteType targetType = FavoriteType.INGREDIENT;
+
+        // 즐겨찾기에 존재하는지 우선 검증
+        boolean exists = favoriteRepository
+                .existsByMemberIdAndTargetTypeAndTargetId(memberId, targetType, targetId);
+
+        // 존재할 경우
+        if(exists){
+            // DB에서 해당 엔터티 제거
+            favoriteRepository.deleteByCondition(memberId, targetType, targetId);
         }
     }
 }

@@ -29,6 +29,7 @@ export default function LiquorDetails(){
 
             // 현재 상태 기준으로 분기
             if (isFavorite) {
+                console.log("즐겨찾기 제거");
                 await fetch(
                     `http://localhost:9999/api/members/me/favorites/ingredients/${id}`,
                     {
@@ -39,6 +40,7 @@ export default function LiquorDetails(){
                     }
                 );
             } else {
+                console.log("즐겨찾기 추가");
                 await fetch(
                     `http://localhost:9999/api/members/me/favorites/ingredients/${id}`,
                     {
@@ -148,13 +150,13 @@ export default function LiquorDetails(){
                     );
 
                     const owned = await ownedResponse.json();
-                    setIsOwned(owned);
+                    setIsOwned(owned); // true || false
                 }
 
                 // 3. 즐겨찾기 여부 조회
                 if (token) {
                     const favoriteResponse = await fetch(
-                        `http://localhost:9999/api/members/me/favorites/cocktails/${id}/exists`,
+                        `http://localhost:9999/api/members/me/favorites/ingredients/${id}/exists`,
                         {
                             headers: {
                                 Authorization: `Bearer ${token}`,
@@ -163,7 +165,7 @@ export default function LiquorDetails(){
                     );
 
                     const favoriteData = await favoriteResponse.json();
-                    setIsFavorite(favoriteData);
+                    setIsFavorite(favoriteData); // true || false
                 }
             } catch (error) {
                 console.error(error);

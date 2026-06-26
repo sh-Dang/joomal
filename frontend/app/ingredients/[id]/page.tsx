@@ -147,13 +147,13 @@ export default function IngredientDetails(){
                     );
 
                     const owned = await ownedResponse.json();
-                    setIsOwned(owned);
+                    setIsOwned(owned); // true || false
                 }
 
                 // 3. 즐겨찾기 여부 조회
                 if (token) {
                     const favoriteResponse = await fetch(
-                        `http://localhost:9999/api/members/me/favorites/cocktails/${id}/exists`,
+                        `http://localhost:9999/api/members/me/favorites/ingredients/${id}/exists`,
                         {
                             headers: {
                                 Authorization: `Bearer ${token}`,
@@ -162,7 +162,7 @@ export default function IngredientDetails(){
                     );
 
                     const favoriteData = await favoriteResponse.json();
-                    setIsFavorite(favoriteData);
+                    setIsFavorite(favoriteData); // true || false
                 }
                 
             } catch (error) {
