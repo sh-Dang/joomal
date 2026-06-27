@@ -28,10 +28,21 @@ public class FavoriteService {
 
     // 즐겨찾기 전체 조회 메서드
     public List<FavoriteResponseDto> getFavorites(Long memberId, FavoriteType type) {
-        List<Favorite> favorites = (type != null)
-                ? favoriteRepository.findByMemberIdAndTargetType(memberId, type)
-                : favoriteRepository.findByMemberId(memberId);
+        // 여기에 type이 ingredient, liquor일떄 분기 필요
+        List<Favorite> favorites;
 
+        if (type == null) {
+            favorites = favoriteRepository.findByMemberId(memberId);
+
+        } else if (type == FavoriteType.INGREDIENT) { // ingredient일때 ingredient의 ingredient조회
+            favorites = favoriteRepository.findIngredientFavorites(memberId);
+
+        } else if (type == FavoriteType.LIQUOR) { // liquor일때 ingredient의 liquor조회
+            favorites = favoriteRepository.findLiquorFavorites(memberId);
+
+        } else { // 현재는 Cocktail 일때
+            favorites = favoriteRepository.findByMemberIdAndTargetType(memberId, type);
+        }
         return favorites.stream()
                 .map(this::toResponseDto)
                 .collect(Collectors.toList());

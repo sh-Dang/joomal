@@ -28,4 +28,26 @@ public interface FavoriteRepository extends JpaRepository<Favorite, Long> {
           AND f.targetId = :targetId
     """)
     void deleteByCondition(Long memberId, FavoriteType targetType, Long targetId);
+
+    @Query("""
+        SELECT f
+        FROM Favorite f
+        JOIN Ingredient i
+        ON f.targetId = i.id
+        WHERE f.member.id = :memberId
+        AND f.targetType = 'INGREDIENT'
+        AND i.type = 'INGREDIENT'
+    """) // f에서 f의 targetId와 i의 id가 같은 컬럼을 조회 //f의 memberId가 들어온 memberId와 같고, targetType이 INGREDIENT이며,
+    List<Favorite> findIngredientFavorites(Long memberId);
+
+    @Query("""
+        SELECT f
+        FROM Favorite f
+        JOIN Ingredient i
+        ON f.targetId = i.id
+        WHERE f.member.id = :memberId
+        AND f.targetType = 'INGREDIENT'
+        AND i.type = 'LIQUOR'
+    """)
+    List<Favorite> findLiquorFavorites(Long memberId);
 }
