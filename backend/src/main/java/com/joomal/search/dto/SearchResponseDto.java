@@ -16,7 +16,7 @@ import java.util.List;
  *   "cocktails": [
  *     {
  *       "id": 1,
- *       "korName": "모히토"
+ *       "korName": "모히또"
  *     },
  *     {
  *       "id": 2,
@@ -26,13 +26,13 @@ import java.util.List;
  *   "liquors": [
  *     {
  *       "id": 3,
- *       "korName": "보드카"
+ *       "korName": "화이트 럼"
  *     }
  *   ],
  *   "ingredients": [
  *     {
  *       "id": 10,
- *       "korName": "레몬"
+ *       "korName": "탄산수"
  *     },
  *     {
  *       "id": 11,
