@@ -11,14 +11,21 @@ export default function Header() {
     // 초기 로그인상태를 false로 관리
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     // 검색시 키워드 지정
-
     const [keyword, setKeyword] = useState("");
+
+    function isTokenExpired(token: string) {
+        const payload = JSON.parse(atob(token.split(".")[1]));
+        return payload.exp * 1000 <= Date.now();
+    }
 
     useEffect(() => {
         // URL에 포함된 accessToken값 조회
         // 초기에는 백엔드가 redirect 하며 http://localhost:3000/?accessToken=eyJhbGc...의 형식으로 보내주는데
         // 해당하는 accessToken에 대한 값을 받아서 accessToken 변수에 저장하는 역할을 해줌
         const accessToken = searchParams.get("accessToken");
+
+        // 현재 토근의 상태
+        let presentToken = accessToken;
 
         // token이 전달된 경우
         if (accessToken) {
@@ -27,18 +34,34 @@ export default function Header() {
 
             // 주소창에서 token을 제거하여 URL에 노출되지 않도록 변경
             window.history.replaceState({}, "", "/");
-
-            // accessToken을 저장한 후 로그인 true 상태로 변경
-            setIsLoggedIn(true);
-            // 이후 로직은 실행하지 않고 종료
-            return;
+            // // accessToken을 저장한 후 로그인 true 상태로 변경
+            // setIsLoggedIn(true);
+            // // 이후 로직은 실행하지 않고 종료
+            // return;
+        } else {
+            // accessToken이 전달되지 않은 경우 현재 토큰상태를 localStorage의 상태와 동기화
+            presentToken = localStorage.getItem("accessToken");
         }
 
-        //token이 전달되지 않은 경우
-        // 기존에 저장된 Access Token 존재 여부 확인
-        const storedToken = localStorage.getItem("accessToken");
-        // accessToken 존재여부에 따른 로그인 상태 수정메서드
-        setIsLoggedIn(!!storedToken);
+        // 현재 토큰이 존재하지 않는 경우
+        if (!presentToken) {
+            // 로그인 플래그 false 설정
+            setIsLoggedIn(false);
+            return; // 함수 종료
+        }
+
+        // 현재 토큰의 exp가 만료된 경우
+        if (isTokenExpired(presentToken)) {
+            // localStorage에서 accessToken을 제거(로그아운 상태로 만듦)
+            localStorage.removeItem("accessToken");
+            // 로그인 플래그 false 설정
+            setIsLoggedIn(false);
+            return; // 함수 종료
+        }
+
+        // 위 검증 통과 후 로그인 플래그 true
+        setIsLoggedIn(true);
+        // TODO : useEffect 특성상 새로고침이나 최초 렌더링 시에만 토큰검증 및 렌더링을 수행하는 문제 해결방안 구축
     }, [searchParams]);
 
     const handleLogout = () => {
